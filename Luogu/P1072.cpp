@@ -1,4 +1,4 @@
- #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -12,65 +12,50 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define dbg(...)
 #endif
 
+
 #define ar array
 #define ll long long
 #define ld long double
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()
 
-const int MAXN = 1e5 + 5;
+const int MAXN = 1e6 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
-const ld EPS = 1e-9;
+const ld EPS = 1e-7;
 
-
-vector<int> adjs[MAXN];
+int minp[MAXN] = {0};
+int g[1010][1010];
+int fac[MAXN][3];
+bitset<MAXN> vis;
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
+
 	
+	int tc;
+	cin >> tc;
+	int a0, a1, b0, b1;
+	while(tc--){
 
-	int n, k, a, b;
-	cin >> n >> k;
-
-	int rd[n + 1];
-	memset(rd, 0, sizeof(rd));
-
-	for(int i = 1; i < n; ++i){
-		cin >> a >> b;
-		adjs[a].push_back(b);
-		adjs[b].push_back(a);
-		rd[a]++, rd[b]++;
-	}
-
-	k = n - k;
-
-	queue<int> q;
-	int res = 1;
-
-	for(int i = 1; i <= n; ++i)
-		if(rd[i] == 1)
-			q.push(i);
-
-	while(!q.empty()){
-		int sz = q.size();
-
-		while(sz--){
-			int t = q.front(); q.pop();
-			--k;
-			if(k == 0)
-				goto result;
-			for(const int adj : adjs[t])
-				if(--rd[adj] == 1)
-					q.push(adj);
+		int res = 0;
+		cin >> a0 >> a1 >> b0 >> b1;
+		for(int i = 1; i * i <= b1; ++i){
+			if(b1 % i == 0){
+				res += i % a1 == 0 && __gcd(i / a1, a0 / a1) == 1 && __gcd(b1 / b0, b1 / i) == 1;
+				int j = b1 / i;
+				if(i == j)
+					continue;
+				res += j % a1 == 0 && __gcd(j / a1, a0 / a1) == 1 && __gcd(b1 / b0, b1 / j) == 1;
+			}
+			
 		}
 
-		++res;
+		cout << res << '\n';
+
 	}
 
-result:
 
-	cout << res << '\n';
-
+ 
 }
